@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class TimeControl implements Runnable {
 	private final SimpleDateFormat SIMPLE_DATE;
@@ -23,42 +24,46 @@ public class TimeControl implements Runnable {
 	public static TimeControl getInstance() {
 		return instance;
 	}
-	
+
 	// 시작 시간 초기화
 	public void initStartTime() {
 		this.startTime = getCurrentTime();
 	}
-	
+
 	public void reset() {
 		this.startTime = 0;
 		this.elapsedTime = 0;
 	}
-	
+
 	public long getCurrentTime() {
 		return System.currentTimeMillis();
 	}
-	
+
 	public long getElapsedTime() {
 		return this.elapsedTime;
 	}
-	
+
 	private void recordElapsedTime() {
 		elapsedTime += getCurrentTime() - startTime;
 	}
 
-	public void start () {
+	public void start() {
 		initStartTime();
 		this.isRun = true;
 	}
-	
-	public void stop () {
+
+	public void stop() {
 		recordElapsedTime();
 		this.isRun = false;
 	}
-	
+
 	@Override
 	public void run() {
-
+		while (isRun) {
+			try {
+				
+			}
+		}
 	}
 
 }
