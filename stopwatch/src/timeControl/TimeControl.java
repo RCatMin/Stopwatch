@@ -10,6 +10,7 @@ public class TimeControl implements Runnable {
 
 	private Calendar calendar;
 	private long startTime;
+	private long elapsedTime;
 
 	private boolean isRun = true;
 
@@ -22,30 +23,42 @@ public class TimeControl implements Runnable {
 	public static TimeControl getInstance() {
 		return instance;
 	}
-
-	public void checkStartTime() {
+	
+	// 시작 시간 초기화
+	public void initStartTime() {
 		this.startTime = getCurrentTime();
 	}
-
-	private long getCurrentTime() {
+	
+	public void reset() {
+		this.startTime = 0;
+		this.elapsedTime = 0;
+	}
+	
+	public long getCurrentTime() {
 		return System.currentTimeMillis();
 	}
+	
+	public long getElapsedTime() {
+		return this.elapsedTime;
+	}
+	
+	private void recordElapsedTime() {
+		elapsedTime += getCurrentTime() - startTime;
+	}
 
+	public void start () {
+		initStartTime();
+		this.isRun = true;
+	}
+	
+	public void stop () {
+		recordElapsedTime();
+		this.isRun = false;
+	}
+	
 	@Override
 	public void run() {
-		checkStartTime();
-		while (isRun) {
-			IOControl.buffer.append(getCurrentTime());
 
-			try {
-				IOControl.writer.append(IOControl.buffer);
-				IOControl.writer.flush();
-
-				Thread.sleep(1000);
-			} catch (IOException | InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 
 }
