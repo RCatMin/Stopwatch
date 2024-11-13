@@ -1,18 +1,18 @@
 package stopwatch;
 
-import java.util.Scanner;
-
 public class Stopwatch {
 	
-	private Scanner scan = new Scanner (System.in);
-	
-	private boolean isRun = true;
-	
-	public void run () {
-		
-		while (isRun) {
-			
-		}
+	private Stopwatch() {
+
 	}
-	
+
+	private static Stopwatch instance = new Stopwatch();
+
+	public static Stopwatch getInstance() {
+		return instance;
+	}
+
+	public void run() {
+
+	}
 }
