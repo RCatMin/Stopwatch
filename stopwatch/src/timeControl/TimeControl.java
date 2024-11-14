@@ -8,6 +8,7 @@ import java.util.TimeZone;
 
 public class TimeControl implements Runnable {
 	private final SimpleDateFormat SIMPLE_DATE;
+	private final TimeZone TIME_ZONE;
 
 	private Calendar calendar;
 	private long startTime;
@@ -16,7 +17,8 @@ public class TimeControl implements Runnable {
 	private boolean isRun = true;
 
 	private TimeControl() {
-		this.SIMPLE_DATE = new SimpleDateFormat("[hh시 mm분 ss초]", Locale.KOREA);
+		this.TIME_ZONE = TimeZone.getTimeZone("Asia/Seoul");
+		this.SIMPLE_DATE = new SimpleDateFormat("[hh시 mm분 ss초]");
 	}
 
 	public static TimeControl instance = new TimeControl();
@@ -42,6 +44,11 @@ public class TimeControl implements Runnable {
 	public long getElapsedTime() {
 		return this.elapsedTime;
 	}
+	
+	public String getTimeFormat() {
+		this.calendar = Calendar.getInstance(TIME_ZONE);
+		return SIMPLE_DATE.format(calendar.getTime());
+	}
 
 	private void recordElapsedTime() {
 		elapsedTime += getCurrentTime() - startTime;
@@ -61,6 +68,14 @@ public class TimeControl implements Runnable {
 	public void run() {
 		while (isRun) {
 			try {
+				IOControl.print(getTimeFormat());
+				
+				long milSec = elapsedTime + getCurrentTime() - startTime;
+				String sec = String.format("[%3d]초\n", (double) milSec / 1000);
+				IOControl.print(sec);
+
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
 				
 			}
 		}
